@@ -65,13 +65,11 @@ services:
   api:
     restart: always
     container_name: api
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - DB_URL=db:5432
-        - DB_USERNAME=user
-        - DB_PASSWORD=root
+    build: .
+    environment:
+      - DB_URL=db:5432
+      - DB_USERNAME=user
+      - DB_PASSWORD=root
     ports:
       - '8080:8080'
     depends_on:
