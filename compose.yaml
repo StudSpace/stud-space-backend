@@ -6,9 +6,76 @@
 services:
   postgres:
     image: 'postgres:latest'
+    container_name: db
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      - 'POSTGRES_DB=studspace'
+      - 'POSTGRES_PASSWORD=root'
+      - 'POSTGRES_USER=user'
     ports:
-      - '5432'
+      - '5432:5432'
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d studspace"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  keycloak_db:
+    image: 'postgres:latest'
+    container_name: kc_db
+    environment:
+      - 'POSTGRES_DB=kc'
+      - 'POSTGRES_PASSWORD=root'
+      - 'POSTGRES_USER=user'
+    ports:
+      - '5433:5432'
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d kc"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  keycloak:
+    image: 'quay.io/keycloak/keycloak:25.0'
+    container_name: kc
+    environment:
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://kc_db:5432/kc
+      - KC_DB_USERNAME=user
+      - KC_DB_PASSWORD=root
+
+      - KC_HOSTNAME=localhost
+      - KC_HOSTNAME_PORT=8080
+      - KC_HOSTNAME_STRICT=false
+      - KC_HOSTNAME_STRICT_HTTPS=false
+
+      - KC_LOG_LEVEL=info
+      - KC_METRICS_ENABLED=true
+      - KC_HEALTH_ENABLED=true
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    command: start-dev
+    depends_on:
+      keycloak_db:
+        condition: service_healthy
+    ports:
+      - '8081:8080'
+
+  api:
+    restart: always
+    container_name: api
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - DB_URL=db:5432
+        - DB_USERNAME=user
+        - DB_PASSWORD=root
+    ports:
+      - '8080:8080'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
