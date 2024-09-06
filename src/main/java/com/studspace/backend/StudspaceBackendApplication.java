@@ -3,16 +3,16 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-package com.studspace.studspace.api;
+package com.studspace.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class StudspaceApiApplication {
+public class StudspaceBackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StudspaceApiApplication.class, args);
+		SpringApplication.run(StudspaceBackendApplication.class, args);
 	}
 
 }

@@ -3,13 +3,13 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-package com.studspace.studspace.api;
+package com.studspace.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class StudspaceApiApplicationTests {
+class StudspaceBackendApplicationTests {
 
 	@Test
 	void contextLoads() {
