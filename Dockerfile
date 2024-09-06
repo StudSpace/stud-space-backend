@@ -17,7 +17,7 @@ FROM eclipse-temurin:21-jre-alpine AS runner
 WORKDIR /app
 
 # Copy the target jar
-COPY --from=build /app/target/studspace-api-*.jar ./api.jar
+COPY --from=build /app/target/studspace-backend-*.jar ./api.jar
 
 ENV DB_URL=localhost:5432
 ENV DB_USERNAME=user

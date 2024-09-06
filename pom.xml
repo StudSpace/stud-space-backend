@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.studspace</groupId>
-	<artifactId>studspace-api</artifactId>
+	<artifactId>studspace-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>studspace-api</name>
+	<name>studspace-backend</name>
 	<description>API for the StudSpace project</description>
 	<url/>
 	<licenses>
